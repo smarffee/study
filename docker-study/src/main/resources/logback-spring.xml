@@ -1,0 +1,52 @@
+<configuration>
+
+    <conversionRule conversionWord="replaceAndParse" converterClass="com.xiaomi.mici.common.util.ReplacingAndParsingCompositeConverter" />
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+
+    <springProperty name="APP_NAME" source="spring.application.name" scope="context"/>
+
+    <!-- 保留的归档文件的最大数量 -->
+    <property name="max.history" value="2"/>
+    <property name="LOG_PATH" value="${LOG_PATH:-.}" />
+
+    <!-- 输出格式 -->
+    <property name="out.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [${HOSTNAME}] [%thread] [%p] %logger{36}:%line - %msg%n" />
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>${out.pattern}</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <Pattern>${out.pattern}</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/docker-study.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${max.history}</maxHistory>
+        </rollingPolicy>
+    </appender >
+
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="stdout" />
+        <appender-ref ref="file" />
+    </root>
+
+    <logger name="com.lin.docker">
+        <level value="debug"/>
+    </logger>
+    <logger name="org.springframework">
+        <level value="WARN"/>
+    </logger>
+    <logger name="com.alibaba.druid">
+        <level value="WARN"/>
+    </logger>
+
+</configuration>

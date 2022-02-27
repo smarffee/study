@@ -1,0 +1,13 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /docker
+
+spring:
+  application:
+    name: docker-study
+
+logging:
+  path: ./log/study
+  config: classpath:logback-spring.xml
+
